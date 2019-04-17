@@ -11,6 +11,8 @@ import com.zqb.mvpkotlin.R
 import com.zqb.mvpkotlin.base.BaseActivity
 import com.zqb.mvpkotlin.presenter.main.MainContract
 import com.zqb.mvpkotlin.presenter.main.MainPresenter
+import com.zqb.mvpkotlin.ui.image.TabFragmentAdapter
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity(override val layoutId: Int = R.layout.activity_main) : BaseActivity<MainPresenter>(), MainContract.View {
 
@@ -38,6 +40,8 @@ class MainActivity(override val layoutId: Int = R.layout.activity_main) : BaseAc
             }
             .start()
         mPresenter.presenterTest()
+        view_pager.adapter = TabFragmentAdapter(supportFragmentManager)
+        tab_layout.setupWithViewPager(view_pager)
     }
 
     override fun onBackPressedSupport() {
