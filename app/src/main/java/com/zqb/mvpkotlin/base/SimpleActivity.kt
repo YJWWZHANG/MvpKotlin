@@ -12,10 +12,6 @@ abstract class SimpleActivity : AppCompatActivity() {
         initEventAndData()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
     protected open fun onViewCreated() {
     }
 

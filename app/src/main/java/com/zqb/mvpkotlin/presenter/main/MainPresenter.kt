@@ -12,6 +12,6 @@ constructor() : RxPresenter<MainContract.View>(), MainContract.Presenter {
 
     override fun presenterTest() {
         LogUtils.w("presenterTest")
-        mView!!.viewTest()
+        mView?.viewTest()
     }
 }

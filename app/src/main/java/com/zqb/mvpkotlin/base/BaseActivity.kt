@@ -21,7 +21,7 @@ abstract class BaseActivity<T : BasePresenter<*>> : SimpleActivity(), BaseView{
     }
 
     fun getActivityComponent() : ActivityComponent {
-        return DaggerActivityComponent.builder().activityModule(ActivityModule(this)).build()
+        return DaggerActivityComponent.builder().activityModule(ActivityModule()).build()
     }
 
     abstract fun initInject()
