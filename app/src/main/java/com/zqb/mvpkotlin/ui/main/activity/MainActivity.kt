@@ -5,12 +5,11 @@ import android.content.Intent
 import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
-import com.blankj.utilcode.util.Utils
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.runtime.Permission
 import com.zqb.mvpkotlin.R
 import com.zqb.mvpkotlin.base.BaseActivity
-import com.zqb.mvpkotlin.base.contract.main.MainContract
+import com.zqb.mvpkotlin.presenter.main.MainContract
 import com.zqb.mvpkotlin.presenter.main.MainPresenter
 
 class MainActivity(override val layoutId: Int = R.layout.activity_main) : BaseActivity<MainPresenter>(), MainContract.View {
@@ -24,7 +23,7 @@ class MainActivity(override val layoutId: Int = R.layout.activity_main) : BaseAc
     private var mExitTime = 0L
 
     override fun initInject() {
-        getActivityComponent().inject(this)
+        activityComponent.inject(this)
         mPresenter.attachView(this)
     }
 

@@ -1,4 +1,4 @@
-package com.zqb.mvpkotlin.base.contract.main
+package com.zqb.mvpkotlin.presenter.main
 
 import com.zqb.mvpkotlin.base.BasePresenter
 import com.zqb.mvpkotlin.base.BaseView

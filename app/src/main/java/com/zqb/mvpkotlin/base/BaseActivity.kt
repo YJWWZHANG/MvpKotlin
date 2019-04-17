@@ -10,6 +10,9 @@ abstract class BaseActivity<T : BasePresenter<*>> : SimpleActivity(), BaseView{
     @Inject
     protected lateinit var mPresenter : T
 
+    protected val activityComponent: ActivityComponent
+        get() = DaggerActivityComponent.builder().activityModule(ActivityModule()).build()
+
     override fun onViewCreated() {
         super.onViewCreated()
         initInject()
@@ -18,10 +21,6 @@ abstract class BaseActivity<T : BasePresenter<*>> : SimpleActivity(), BaseView{
     override fun onDestroy() {
         mPresenter.detachView()
         super.onDestroy()
-    }
-
-    fun getActivityComponent() : ActivityComponent {
-        return DaggerActivityComponent.builder().activityModule(ActivityModule()).build()
     }
 
     abstract fun initInject()
