@@ -21,6 +21,8 @@ class MainActivity(override val layoutId: Int = R.layout.activity_main) : BaseAc
         }
     }
 
+    private var mExitTime = 0L
+
     override fun initInject() {
         getActivityComponent().inject(this)
         mPresenter.attachView(this)
@@ -40,8 +42,12 @@ class MainActivity(override val layoutId: Int = R.layout.activity_main) : BaseAc
     }
 
     override fun onBackPressedSupport() {
-        super.onBackPressedSupport()
-        AppUtils.exitApp()
+        if (System.currentTimeMillis() - mExitTime > 2000) {
+            mExitTime = System.currentTimeMillis()
+            ToastUtils.showShort("再按一次退出程序")
+        } else {
+            AppUtils.exitApp()
+        }
     }
 
     override fun viewTest() {
