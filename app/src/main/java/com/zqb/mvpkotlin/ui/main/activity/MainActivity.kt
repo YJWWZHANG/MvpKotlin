@@ -5,14 +5,18 @@ import android.content.Intent
 import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
+import com.google.gson.Gson
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.runtime.Permission
 import com.zqb.mvpkotlin.R
 import com.zqb.mvpkotlin.base.BaseActivity
+import com.zqb.mvpkotlin.model.bean.ImageBean
 import com.zqb.mvpkotlin.presenter.main.MainContract
 import com.zqb.mvpkotlin.presenter.main.MainPresenter
 import com.zqb.mvpkotlin.ui.image.TabFragmentAdapter
 import kotlinx.android.synthetic.main.activity_main.*
+import okhttp3.*
+import java.io.IOException
 
 class MainActivity(override val layoutId: Int = R.layout.activity_main) : BaseActivity<MainPresenter>(), MainContract.View {
 
