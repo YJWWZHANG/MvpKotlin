@@ -5,6 +5,8 @@ import com.zqb.mvpkotlin.R
 import com.zqb.mvpkotlin.base.RxPresenter
 import com.zqb.mvpkotlin.model.bean.ImageBean
 import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -25,15 +27,14 @@ class ImagePresenter @Inject constructor() : RxPresenter<ImageContract.View>(), 
             .build()
         val imageApi = retrofit2.create(ImageApi::class.java)
         val call = imageApi.loadImage(Utils.getApp().resources.getStringArray(R.array.tab)[position], mCurrentPage * 48)
-        Thread {
-            kotlin.run {
-                val imageBean = call.execute().body()
-                if (imageBean != null) {
-                    mView?.setImages(imageBean.items)
-                    mCurrentPage++
-                }
+        call.enqueue(object : Callback<ImageBean> {
+            override fun onFailure(call: Call<ImageBean>, t: Throwable) {
             }
-        }.start()
+            override fun onResponse(call: Call<ImageBean>, response: Response<ImageBean>) {
+                mView?.setImages(response.body()!!.items)
+                mCurrentPage++
+            }
+        })
     }
 
     interface ImageApi {
