@@ -1,4 +1,4 @@
-package com.zqb.mvpkotlin.di.scope
+package com.zqb.mvpkotlin.model.di.scope
 
 import java.lang.annotation.Retention
 import java.lang.annotation.RetentionPolicy

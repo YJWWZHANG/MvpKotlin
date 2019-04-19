@@ -38,8 +38,13 @@ class ImageFragment : BaseFragment<ImagePresenter>(), ImageContract.View {
         mPresenter.loadImages(arguments!!.getInt(POSITION))
     }
 
-    override fun setImages(images: List<ImageBean.Item>) {
+    override fun onSuccess(images: List<ImageBean.Item>) {
         mImageAdapter.addData(images)
         mImageAdapter.loadMoreComplete()
     }
+
+    override fun onError() {
+        mImageAdapter.loadMoreFail()
+    }
+
 }

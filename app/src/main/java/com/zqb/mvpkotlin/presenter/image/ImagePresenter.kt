@@ -1,17 +1,14 @@
 package com.zqb.mvpkotlin.presenter.image
 
+import android.annotation.SuppressLint
+import com.blankj.utilcode.util.ToastUtils
 import com.blankj.utilcode.util.Utils
 import com.zqb.mvpkotlin.R
 import com.zqb.mvpkotlin.base.RxPresenter
-import com.zqb.mvpkotlin.model.bean.ImageBean
-import io.reactivex.Flowable
+import com.zqb.mvpkotlin.model.net.ImageApi
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Query
 import javax.inject.Inject
 
 /**
@@ -21,29 +18,23 @@ class ImagePresenter @Inject constructor() : RxPresenter<ImageContract.View>(), 
 
     private var mCurrentPage = 0
 
+    @Inject
+    lateinit var mRetrofit: Retrofit
+
+    @SuppressLint("CheckResult")
     override fun loadImages(position: Int) {
-        Retrofit.Builder()
-            .baseUrl("http://pic.sogou.com")
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .build()
-            .create(ImageApi::class.java)
+        mRetrofit.create(ImageApi::class.java)
             .loadImage(Utils.getApp().resources.getStringArray(R.array.tab)[position], mCurrentPage * 48)
             .subscribeOn(Schedulers.io())
             .doOnSubscribe { }
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext {
-                mView!!.setImages(it.items)
+            .subscribe({
+                mView!!.onSuccess(it.items)
                 mCurrentPage++
-            }
-            .doOnComplete { }
-            .doOnError { }
-            .subscribe()
-    }
-
-    interface ImageApi {
-        @GET("/pics?reqType=ajax&reqFrom=result")
-        fun loadImage(@Query("query") query: String, @Query("start") start: Int): Flowable<ImageBean>
+            }, {
+                mView!!.onError()
+                ToastUtils.showShort(it.message)
+            })
     }
 
 }

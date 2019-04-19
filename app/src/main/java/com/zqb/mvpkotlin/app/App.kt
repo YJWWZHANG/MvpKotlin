@@ -1,6 +1,8 @@
 package com.zqb.mvpkotlin.app
 
+import android.annotation.SuppressLint
 import android.app.Application
+import com.blankj.utilcode.util.CrashUtils
 import com.blankj.utilcode.util.Utils
 
 /**
@@ -8,8 +10,10 @@ import com.blankj.utilcode.util.Utils
  */
 class App: Application() {
 
+    @SuppressLint("MissingPermission")
     override fun onCreate() {
         super.onCreate()
         Utils.init(this)
+        CrashUtils.init(externalCacheDir.path)
     }
 }

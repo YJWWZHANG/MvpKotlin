@@ -1,4 +1,4 @@
-package com.zqb.mvpkotlin.di.module
+package com.zqb.mvpkotlin.model.di.module
 
 import dagger.Module
 

@@ -3,7 +3,7 @@ package com.zqb.mvpkotlin.ui.guide
 import android.os.Handler
 import com.zqb.mvpkotlin.R
 import com.zqb.mvpkotlin.base.SimpleActivity
-import com.zqb.mvpkotlin.ui.main.activity.MainActivity
+import com.zqb.mvpkotlin.ui.main.MainActivity
 
 /**
  *创建时间:2019/4/17 15:01

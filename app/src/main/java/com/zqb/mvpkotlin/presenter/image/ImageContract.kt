@@ -10,7 +10,8 @@ import com.zqb.mvpkotlin.model.bean.ImageBean
 interface ImageContract {
 
     interface View: BaseView {
-        fun setImages(images: List<ImageBean.Item>)
+        fun onSuccess(images: List<ImageBean.Item>)
+        fun onError()
     }
 
     interface Presenter: BasePresenter<View> {

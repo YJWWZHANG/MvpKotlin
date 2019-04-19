@@ -2,8 +2,8 @@ package com.zqb.mvpkotlin.base
 
 import android.os.Bundle
 import android.view.View
-import com.zqb.mvpkotlin.di.component.DaggerFragmentComponent
-import com.zqb.mvpkotlin.di.component.FragmentComponent
+import com.zqb.mvpkotlin.model.di.component.DaggerFragmentComponent
+import com.zqb.mvpkotlin.model.di.component.FragmentComponent
 
 import javax.inject.Inject
 
