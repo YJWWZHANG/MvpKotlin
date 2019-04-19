@@ -4,10 +4,11 @@ import com.blankj.utilcode.util.Utils
 import com.zqb.mvpkotlin.R
 import com.zqb.mvpkotlin.base.RxPresenter
 import com.zqb.mvpkotlin.model.bean.ImageBean
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import io.reactivex.Flowable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -21,25 +22,28 @@ class ImagePresenter @Inject constructor() : RxPresenter<ImageContract.View>(), 
     private var mCurrentPage = 0
 
     override fun loadImages(position: Int) {
-        val retrofit2 = Retrofit.Builder()
+        Retrofit.Builder()
             .baseUrl("http://pic.sogou.com")
             .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
-        val imageApi = retrofit2.create(ImageApi::class.java)
-        val call = imageApi.loadImage(Utils.getApp().resources.getStringArray(R.array.tab)[position], mCurrentPage * 48)
-        call.enqueue(object : Callback<ImageBean> {
-            override fun onFailure(call: Call<ImageBean>, t: Throwable) {
-            }
-            override fun onResponse(call: Call<ImageBean>, response: Response<ImageBean>) {
-                mView?.setImages(response.body()!!.items)
+            .create(ImageApi::class.java)
+            .loadImage(Utils.getApp().resources.getStringArray(R.array.tab)[position], mCurrentPage * 48)
+            .subscribeOn(Schedulers.io())
+            .doOnSubscribe { }
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnNext {
+                mView!!.setImages(it.items)
                 mCurrentPage++
             }
-        })
+            .doOnComplete { }
+            .doOnError { }
+            .subscribe()
     }
 
     interface ImageApi {
         @GET("/pics?reqType=ajax&reqFrom=result")
-        fun loadImage(@Query("query") query: String, @Query("start") start: Int): Call<ImageBean>
+        fun loadImage(@Query("query") query: String, @Query("start") start: Int): Flowable<ImageBean>
     }
 
 }

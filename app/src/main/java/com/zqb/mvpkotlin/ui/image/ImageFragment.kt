@@ -39,9 +39,7 @@ class ImageFragment : BaseFragment<ImagePresenter>(), ImageContract.View {
     }
 
     override fun setImages(images: List<ImageBean.Item>) {
-        activity?.runOnUiThread {
-            mImageAdapter.addData(images)
-            mImageAdapter.loadMoreComplete()
-        }
+        mImageAdapter.addData(images)
+        mImageAdapter.loadMoreComplete()
     }
 }
