@@ -1,11 +1,20 @@
 package com.zqb.mvpkotlin.model.di.module
 
+import android.annotation.SuppressLint
 import android.app.Application
 import com.blankj.utilcode.util.NetworkUtils
 import com.blankj.utilcode.util.Utils
 import com.readystatesoftware.chuck.ChuckInterceptor
+import com.trello.rxlifecycle2.android.ActivityEvent
+import com.trello.rxlifecycle2.components.RxActivity
+import com.zqb.mvpkotlin.model.net.SougouApi
 import dagger.Module
 import dagger.Provides
+import io.reactivex.Observable
+import io.reactivex.ObservableSource
+import io.reactivex.ObservableTransformer
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -17,6 +26,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
+
 
 /**
  *创建时间:2019/4/19 17:15
@@ -104,6 +114,12 @@ class NetworkModule {
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(okHttpClient)
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun providesImageApi(retrofit: Retrofit): SougouApi {
+        return retrofit.create(SougouApi::class.java)
     }
 
 }

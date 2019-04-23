@@ -15,6 +15,6 @@ interface ImageContract {
     }
 
     interface Presenter: BasePresenter<View> {
-        fun loadImages(position: Int)
+        fun loadImages(position: Int, isLoadMore: Boolean)
     }
 }

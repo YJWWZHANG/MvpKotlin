@@ -2,7 +2,6 @@ package com.zqb.mvpkotlin.ui.image
 
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
-import com.chad.library.adapter.base.BaseQuickAdapter
 import com.zqb.mvpkotlin.R
 import com.zqb.mvpkotlin.base.BaseFragment
 import com.zqb.mvpkotlin.model.bean.ImageBean
@@ -26,7 +25,7 @@ class ImageFragment : BaseFragment<ImagePresenter>(), ImageContract.View {
 
     override fun initInject() {
         fragmentComponent.inject(this)
-        mPresenter.attachView(this)
+        activity?.let { mPresenter.attachView(this, it) }
     }
 
     override fun initEventAndData() {
@@ -34,17 +33,24 @@ class ImageFragment : BaseFragment<ImagePresenter>(), ImageContract.View {
         recycler_view.addItemDecoration(ImageItemDecoration())
         mImageAdapter = ImageAdapter(data = ArrayList())
         mImageAdapter.bindToRecyclerView(recycler_view)
-        mImageAdapter.setOnLoadMoreListener({ mPresenter.loadImages(arguments!!.getInt(POSITION)) }, recycler_view)
-        mPresenter.loadImages(arguments!!.getInt(POSITION))
+        mImageAdapter.setOnLoadMoreListener({ mPresenter.loadImages(arguments!!.getInt(POSITION), true) }, recycler_view)
+        mPresenter.loadImages(arguments!!.getInt(POSITION), false)
+        swipe_refresh.setOnRefreshListener {
+            mImageAdapter.setNewData(ArrayList())
+            mPresenter.loadImages(arguments!!.getInt(POSITION), false)
+        }
+        swipe_refresh.isRefreshing = true
     }
 
     override fun onSuccess(images: List<ImageBean.Item>) {
         mImageAdapter.addData(images)
         mImageAdapter.loadMoreComplete()
+        swipe_refresh.isRefreshing = false
     }
 
     override fun onError() {
         mImageAdapter.loadMoreFail()
+        swipe_refresh.isRefreshing = false
     }
 
 }

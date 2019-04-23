@@ -26,7 +26,7 @@ class MainActivity(override val layoutId: Int = R.layout.activity_main) : BaseAc
 
     override fun initInject() {
         activityComponent.inject(this)
-        mPresenter.attachView(this)
+        mPresenter.attachView(this, this)
     }
 
     override fun initEventAndData() {
@@ -44,7 +44,7 @@ class MainActivity(override val layoutId: Int = R.layout.activity_main) : BaseAc
         tab_layout.setupWithViewPager(view_pager)
     }
 
-    override fun onBackPressedSupport() {
+    override fun onBackPressed() {
         if (System.currentTimeMillis() - mExitTime > 2000) {
             mExitTime = System.currentTimeMillis()
             ToastUtils.showShort("再按一次退出程序")
